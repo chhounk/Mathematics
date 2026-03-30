@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reflection in n-Dimensional Euclidean Space — Kal's Mathematics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #1a1a18; --ink-muted: #6b6b66; --ink-faint: #a8a8a2;
+      --paper: #f7f5f0; --paper-warm: #edeae3; --rule: #d4d0c8;
+      --accent: #2d5fa6; --accent-soft: #e8eef8;
+      --serif: 'EB Garamond', Georgia, serif; --mono: 'DM Mono', monospace;
+    }
+    html { font-size: 18px; }
+    body { font-family: var(--serif); background: var(--paper); color: var(--ink); line-height: 1.8; }
+    nav { border-bottom: 1px solid var(--rule); padding: 1.1rem 2rem; display: flex; align-items: center; gap: 0.5rem; }
+    .nav-back { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); text-decoration: none; transition: color 0.15s; }
+    .nav-back:hover { color: #2d5fa6; }
+    .nav-sep { font-family: var(--mono); font-size: 0.65rem; color: var(--rule); }
+    .nav-cur { font-family: var(--mono); font-size: 0.65rem; color: var(--ink-muted); }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+    .eyebrow { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+    h1 { font-size: 2rem; font-weight: 400; line-height: 1.2; margin-bottom: 0.25rem; }
+    h1 em { font-style: italic; color: var(--ink-muted); }
+    .meta { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-faint); margin-bottom: 0.75rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 2rem; }
+    .tag { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); padding: 0.2rem 0.6rem; border-radius: 2px; }
+    .rule { border: none; border-top: 1px solid var(--rule); margin-bottom: 2rem; }
+    .abstract { font-style: italic; color: var(--ink-muted); font-size: 0.95rem; margin-bottom: 2rem; padding-left: 1.25rem; border-left: 2px solid var(--rule); }
+    h2 { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 2.5rem 0 1rem; }
+    h3 { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin: 1.75rem 0 0.75rem; }
+    p { margin-bottom: 1.1rem; }
+    .def-box { background: var(--paper-warm); border-left: 3px solid var(--accent); padding: 1rem 1.25rem; margin: 1.5rem 0; border-radius: 0 4px 4px 0; }
+    .def-box .label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+    .remark-box { background: var(--paper-warm); border-radius: 4px; padding: 1rem 1.25rem; margin: 1.5rem 0; }
+    .remark-box .label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.5rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 1.5rem 0; }
+    th { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); border-bottom: 1px solid var(--rule); padding: 0.5rem 0.75rem; text-align: left; }
+    td { padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--paper-warm); vertical-align: middle; }
+
+    /* 2D Visualiser */
+    .explorer { border: 1px solid var(--rule); border-radius: 8px; padding: 1.5rem; margin: 2rem 0; background: var(--paper-warm); }
+    .explorer-title { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; }
+    .vis-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem 1.5rem; margin-bottom: 1.25rem; }
+    .ctrl { display: flex; flex-direction: column; gap: 4px; }
+    .ctrl label { font-family: var(--mono); font-size: 0.65rem; color: var(--ink-faint); letter-spacing: 0.08em; }
+    .ctrl select { width: 100%; font-family: var(--mono); font-size: 0.75rem; }
+    .canvas-wrap { display: flex; justify-content: center; }
+    canvas { border: 1px solid var(--rule); border-radius: 4px; background: #fff; }
+    .matrix-display { font-family: var(--mono); font-size: 0.72rem; color: var(--ink-muted); margin-top: 0.75rem; text-align: center; }
+
+    .download-bar { display: flex; align-items: center; justify-content: space-between; background: var(--paper-warm); border: 1px solid var(--rule); border-radius: 4px; padding: 0.75rem 1.25rem; margin-top: 3rem; }
+    .download-bar span { font-family: var(--mono); font-size: 0.65rem; color: var(--ink-faint); }
+    .download-bar a { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); text-decoration: none; }
+    footer { border-top: 1px solid var(--rule); padding: 2rem; text-align: center; font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-back" href="../index.html">&larr; All papers</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-cur">Reflection in n-dimensional Euclidean space</span>
+</nav>
+
+<div class="wrap">
+  <p class="eyebrow">Linear Algebra &middot; Geometry</p>
+  <h1>Reflection in <em>n</em>-dimensional Euclidean space</h1>
+  <p class="meta">Kalim Chhoun &middot; 1 February 2025</p>
+  <div class="tags">
+    <span class="tag">Linear Algebra</span>
+    <span class="tag">Geometry</span>
+    <span class="tag">Householder</span>
+    <span class="tag">Matrices</span>
+  </div>
+  <hr class="rule" />
+
+  <p class="abstract">We develop a systematic treatment of geometric reflection across dimensions. Beginning with 2D reflections over axes and arbitrary lines, we extend to 3D reflections over axes, planes, and points, presenting each case with its transformation matrix. We then derive the general \( n \)-dimensional form using the Householder reflection framework.</p>
+
+  <h2>1. Introduction and notation</h2>
+  <div class="def-box">
+    <div class="label">Definition — Reflector</div>
+    <p style="margin:0;">A <em>reflector</em> is the geometric object with respect to which a reflection is performed — an axis, hyperplane, origin, or point. We write \( \mathrm{Ref}_{\text{reflector}}^{\mathbb{R}^n}(V) \) to encode the dimension, reflector, and object simultaneously.</p>
+  </div>
+  <p>Since reflection through the origin is consistent across all dimensions, we write \( \mathrm{Ref}(V) := \mathrm{Ref}_0(V) \) for conciseness.</p>
+
+  <h2>2. Reflection in \( \mathbb{R}^2 \)</h2>
+
+  <h3>2.1 Standard axis reflections</h3>
+  <p>Consider a square \( V = \{(1,3),(3,3),(1,1),(3,1)\} \). To reflect over the \( x \)-axis (\( y=0 \)):</p>
+  \[ \mathrm{Ref}_x^{\mathbb{R}^2}(V) = V\begin{bmatrix}1&0\\0&-1\end{bmatrix} = \{(1,-3),(3,-3),(1,-1),(3,-1)\} \]
+  <p>The remaining standard reflection matrices:</p>
+  \[ \mathrm{Ref}_y^{\mathbb{R}^2} = \begin{bmatrix}-1&0\\0&1\end{bmatrix} \qquad \mathrm{Ref}_{y=x}^{\mathbb{R}^2} = \begin{bmatrix}0&1\\1&0\end{bmatrix} \qquad \mathrm{Ref}_{y=-x}^{\mathbb{R}^2} = \begin{bmatrix}0&-1\\-1&0\end{bmatrix} \]
+  \[ \mathrm{Ref}_0^{\mathbb{R}^2} = \begin{bmatrix}-1&0\\0&-1\end{bmatrix} \]
+
+  <h2>2D reflection visualiser</h2>
+  <p>Pick a reflector and see the square transform live.</p>
+
+  <div class="explorer">
+    <div class="explorer-title">Interactive — 2D reflection explorer</div>
+    <div class="vis-controls">
+      <div class="ctrl">
+        <label>Reflector</label>
+        <select id="reflector">
+          <option value="x">x-axis</option>
+          <option value="y">y-axis</option>
+          <option value="yx">y = x</option>
+          <option value="ynx">y = -x</option>
+          <option value="o">Origin</option>
+        </select>
+      </div>
+    </div>
+    <div class="canvas-wrap"><canvas id="vis" width="320" height="320"></canvas></div>
+    <div class="matrix-display" id="mat-display"></div>
+  </div>
+
+  <h3>2.2 Reflection over an arbitrary line \( y = mx + c \)</h3>
+  <p>Let \( P(a,b) \) be the point to reflect and \( (x_1, y_1) \) the foot of the perpendicular from \( P \) to the line.</p>
+  <p><strong>Step 1 — Find the foot:</strong></p>
+  \[ x_1 = \frac{a + mb - mc}{m^2+1}, \qquad y_1 = m \cdot \frac{a+mb-mc}{m^2+1} + c \]
+  <p><strong>Step 2 — Find the reflected point \( P'(a',b') \):</strong></p>
+  \[ P' = \mathrm{Ref}_Q^{\mathbb{R}^2}(P) = \begin{pmatrix} \dfrac{(1-m^2)a + 2m(b-c)}{m^2+1} \\[1em] \dfrac{(m^2-1)b + 2ma + 2c}{m^2+1} \end{pmatrix} \quad \text{where } y = mx+c \]
+
+  <h3>2.3 Reflection through an arbitrary point</h3>
+  <p>A point \( P(a,b) \) reflected through centre \( Q(x,y) \) satisfies \( (P+P')/2 = Q \):</p>
+  \[ P' = 2Q - P = \mathrm{Ref}_Q^{\mathbb{R}^2}(P) = \begin{pmatrix}2x-a\\2y-b\end{pmatrix} \]
+
+  <h3>2.4 Remark on reflecting through an arbitrary function</h3>
+  <p>Extending reflection to an arbitrary function \( f(x) \) is subtle: a point may have multiple closest points on the curve, making the reflected image ambiguous. In such cases, the definition of reflection depends on additional choices made by the person performing the calculation.</p>
+
+  <h2>3. Reflection in \( \mathbb{R}^3 \)</h2>
+  <table>
+    <thead><tr><th>Reflector</th><th>Transformation</th><th>Matrix</th></tr></thead>
+    <tbody>
+      <tr><td>Origin</td><td>\((x,y,z)\to(-x,-y,-z)\)</td><td>\(\begin{pmatrix}-1&0&0\\0&-1&0\\0&0&-1\end{pmatrix}\)</td></tr>
+      <tr><td>\(x\)-axis</td><td>\((x,y,z)\to(x,-y,-z)\)</td><td>\(\begin{pmatrix}1&0&0\\0&-1&0\\0&0&-1\end{pmatrix}\)</td></tr>
+      <tr><td>\(y\)-axis</td><td>\((x,y,z)\to(-x,y,-z)\)</td><td>\(\begin{pmatrix}-1&0&0\\0&1&0\\0&0&-1\end{pmatrix}\)</td></tr>
+      <tr><td>\(z\)-axis</td><td>\((x,y,z)\to(-x,-y,z)\)</td><td>\(\begin{pmatrix}-1&0&0\\0&-1&0\\0&0&1\end{pmatrix}\)</td></tr>
+      <tr><td>\(xy\)-plane</td><td>\((x,y,z)\to(x,y,-z)\)</td><td>\(\begin{pmatrix}1&0&0\\0&1&0\\0&0&-1\end{pmatrix}\)</td></tr>
+      <tr><td>\(xz\)-plane</td><td>\((x,y,z)\to(x,-y,z)\)</td><td>\(\begin{pmatrix}1&0&0\\0&-1&0\\0&0&1\end{pmatrix}\)</td></tr>
+      <tr><td>\(yz\)-plane</td><td>\((x,y,z)\to(-x,y,z)\)</td><td>\(\begin{pmatrix}-1&0&0\\0&1&0\\0&0&1\end{pmatrix}\)</td></tr>
+      <tr><td>Point \(P(a,b,c)\)</td><td>\((x,y,z)\to(-x{+}2a,-y{+}2b,-z{+}2c)\)</td><td>\(\begin{pmatrix}-x+2a\\-y+2b\\-z+2c\end{pmatrix}\)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>4. Reflection in \( \mathbb{R}^4 \)</h2>
+  <p>In \( \mathbb{R}^4 \) there are four hyperplanes: \( x_1x_2x_3 \), \( x_1x_2x_4 \), \( x_1x_3x_4 \), \( x_2x_3x_4 \). As an example:</p>
+  \[ \mathrm{Ref}^4_{\overline{x}_4} = \mathrm{Ref}^4_{x_1x_2x_3} = \begin{pmatrix}1&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&-1\end{pmatrix} \]
+
+  <h2>5. \( n \)-dimensional generalisation</h2>
+  <p>In \( \mathbb{R}^n \), reflection is expressed using the identity matrix \( I \) and the outer product \( \mathbf{x}_i\mathbf{x}_i^\top \):</p>
+  <table>
+    <thead><tr><th>Reflector</th><th>Matrix</th></tr></thead>
+    <tbody>
+      <tr><td>Origin</td><td>\(\mathrm{Ref} = -I\)</td></tr>
+      <tr><td>Axis \( x_i \)</td><td>\(\mathrm{Ref}_{x_i} = -I + 2\,\mathbf{x}_i\mathbf{x}_i^\top\)</td></tr>
+      <tr><td>Hyperplane \( \bar{x}_i \)</td><td>\(\mathrm{Ref}_{\bar{x}_i} = I - 2\,\mathbf{x}_i\mathbf{x}_i^\top\)</td></tr>
+      <tr><td>Point \( P \)</td><td>\(\mathrm{Ref}_P(V) = -V + 2P\)</td></tr>
+    </tbody>
+  </table>
+  <p>Here \( \mathbf{x}_i\mathbf{x}_i^\top \) is the outer product — a rank-1 matrix with a single \( 1 \) in the \( (i,i) \) position. The hyperplane formula \( I - 2\mathbf{x}_i\mathbf{x}_i^\top \) is the classical <em>Householder reflection</em> matrix.</p>
+
+  <div class="remark-box">
+    <div class="label">Remark</div>
+    <p style="margin:0;">The axis and hyperplane formulas are complementary: reflecting over an axis flips all coordinates <em>except</em> the axis direction, while reflecting over a hyperplane flips only the coordinate perpendicular to it — captured by the sign difference \( -I + 2\mathbf{x}_i\mathbf{x}_i^\top \) versus \( I - 2\mathbf{x}_i\mathbf{x}_i^\top \).</p>
+  </div>
+
+  <div class="download-bar">
+    <span>reflection.pdf</span>
+    <a href="../papers/reflection.pdf" download>&darr; Download PDF</a>
+  </div>
+</div>
+
+<footer>&copy; Kalim Chhoun &middot; Phnom Penh, Cambodia</footer>
+
+<script>
+const canvas = document.getElementById('vis');
+const ctx = canvas.getContext('2d');
+const W = 320, H = 320, cx = W/2, cy = H/2, scale = 28;
+
+const SQUARE = [[1,3],[3,3],[3,1],[1,1]];
+
+const reflectors = {
+  x:   { mat: [[1,0],[0,-1]],  label: 'Ref_x = [[1,0],[0,-1]]',  line: 'x' },
+  y:   { mat: [[-1,0],[0,1]],  label: 'Ref_y = [[-1,0],[0,1]]',  line: 'y' },
+  yx:  { mat: [[0,1],[1,0]],   label: 'Ref_{y=x} = [[0,1],[1,0]]', line: 'yx' },
+  ynx: { mat: [[0,-1],[-1,0]], label: 'Ref_{y=-x} = [[0,-1],[-1,0]]', line: 'ynx' },
+  o:   { mat: [[-1,0],[0,-1]], label: 'Ref_0 = [[-1,0],[0,-1]]', line: null },
+};
+
+function applyMat(pt, mat) {
+  return [
+    pt[0]*mat[0][0] + pt[1]*mat[1][0],
+    pt[0]*mat[0][1] + pt[1]*mat[1][1],
+  ];
+}
+
+function toCanvas(x, y) {
+  return [cx + x*scale, cy - y*scale];
+}
+
+function drawAxes() {
+  ctx.strokeStyle = '#d4d0c8';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(W, cy); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx, 0); ctx.lineTo(cx, H); ctx.stroke();
+  ctx.fillStyle = '#a8a8a2';
+  ctx.font = '10px DM Mono, monospace';
+  for (let i = -5; i <= 5; i++) {
+    if (i === 0) continue;
+    const [px, py] = toCanvas(i, 0);
+    ctx.fillText(i, px-3, cy+12);
+    const [qx, qy] = toCanvas(0, i);
+    ctx.fillText(i, cx+4, qy+3);
+  }
+}
+
+function drawPoly(pts, color, dash=[]) {
+  ctx.setLineDash(dash);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  const [sx, sy] = toCanvas(pts[0][0], pts[0][1]);
+  ctx.moveTo(sx, sy);
+  for (let i = 1; i < pts.length; i++) {
+    const [x, y] = toCanvas(pts[i][0], pts[i][1]);
+    ctx.lineTo(x, y);
+  }
+  ctx.closePath();
+  ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+function drawRefLine(type) {
+  ctx.strokeStyle = '#a8a8a2';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4,4]);
+  ctx.beginPath();
+  if (type === 'x') { ctx.moveTo(0,cy); ctx.lineTo(W,cy); }
+  else if (type === 'y') { ctx.moveTo(cx,0); ctx.lineTo(cx,H); }
+  else if (type === 'yx') { ctx.moveTo(0,H); ctx.lineTo(W,0); }
+  else if (type === 'ynx') { ctx.moveTo(0,0); ctx.lineTo(W,H); }
+  ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  drawAxes();
+  const key = document.getElementById('reflector').value;
+  const r = reflectors[key];
+  if (r.line) drawRefLine(r.line);
+  drawPoly(SQUARE, '#2d5fa6');
+  const reflected = SQUARE.map(p => applyMat(p, r.mat));
+  drawPoly(reflected, '#b43c1e', [6,3]);
+  // labels
+  ctx.fillStyle = '#2d5fa6';
+  ctx.font = '11px EB Garamond, serif';
+  const [lx, ly] = toCanvas(SQUARE[0][0]-0.3, SQUARE[0][1]+0.3);
+  ctx.fillText('V', lx, ly);
+  ctx.fillStyle = '#b43c1e';
+  const [rx, ry] = toCanvas(reflected[0][0]-0.3, reflected[0][1]+0.3);
+  ctx.fillText("V'", rx, ry);
+  document.getElementById('mat-display').textContent = r.label;
+}
+
+document.getElementById('reflector').addEventListener('change', draw);
+draw();
+</script>
+</body>
+</html>
