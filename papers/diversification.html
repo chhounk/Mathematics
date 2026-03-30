@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Decision-Making in the Context of Diversification — Kal's Mathematics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1a18;
+      --ink-muted: #6b6b66;
+      --ink-faint: #a8a8a2;
+      --paper: #f7f5f0;
+      --paper-warm: #edeae3;
+      --rule: #d4d0c8;
+      --accent: #2d5fa6;
+      --accent-soft: #e8eef8;
+      --serif: 'EB Garamond', Georgia, serif;
+      --mono: 'DM Mono', monospace;
+    }
+
+    html { font-size: 18px; }
+
+    body {
+      font-family: var(--serif);
+      background: var(--paper);
+      color: var(--ink);
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    /* Nav */
+    nav {
+      border-bottom: 1px solid var(--rule);
+      padding: 1.1rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-back {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .nav-back:hover { color: var(--accent); }
+
+    .nav-sep {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--rule);
+    }
+
+    .nav-current {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      color: var(--ink-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Header */
+    .paper-header {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 3rem 2rem 2rem;
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.4s ease both;
+    }
+
+    .paper-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      letter-spacing: -0.01em;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .meta-item {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      color: var(--ink-faint);
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 0.2rem 0.6rem;
+      border-radius: 2px;
+    }
+
+    /* PDF viewer */
+    .viewer-wrap {
+      max-width: 900px;
+      margin: 0 auto 2rem;
+      padding: 0 2rem;
+      animation: fadeUp 0.5s ease 0.1s both;
+    }
+
+    .viewer-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem 1rem;
+      background: var(--paper-warm);
+      border: 1px solid var(--rule);
+      border-bottom: none;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .viewer-label {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .download-link {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+
+    .download-link:hover { opacity: 0.7; }
+
+    .pdf-frame {
+      width: 100%;
+      height: 85vh;
+      min-height: 600px;
+      border: 1px solid var(--rule);
+      border-radius: 0 0 4px 4px;
+      display: block;
+      background: #fff;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--rule);
+      padding: 2rem;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-top: 2rem;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-back" href="../index.html">&larr; All papers</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current">Decision-Making in the Context of Diversification</span>
+  </nav>
+
+  <div class="paper-header">
+    <p class="paper-eyebrow">Applied Mathematics &middot; Finance</p>
+    <h1>Decision-Making in the Context of Diversification</h1>
+    <div class="meta-row">
+      <span class="meta-item">Kalim Chhoun</span>
+      <span class="meta-item">27 December 2024</span>
+    </div>
+    <div class="tags">
+      <span class="tag">Applied Mathematics</span>
+      <span class="tag">Finance</span>
+      <span class="tag">Frobenius Norm</span>
+    </div>
+  </div>
+
+  <div class="viewer-wrap">
+    <div class="viewer-toolbar">
+      <span class="viewer-label">PDF &middot; diversification.pdf</span>
+      <a class="download-link" href="../papers/diversification.pdf" download>&darr; Download</a>
+    </div>
+    <iframe
+      class="pdf-frame"
+      src="../papers/diversification.pdf"
+      title="Decision-Making in the Context of Diversification"
+    ></iframe>
+  </div>
+
+  <footer>
+    &copy; Kalim Chhoun &middot; Phnom Penh, Cambodia
+  </footer>
+
+</body>
+</html>
