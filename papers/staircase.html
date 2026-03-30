@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Counting Staircase Climbs — Kal's Mathematics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #1a1a18; --ink-muted: #6b6b66; --ink-faint: #a8a8a2;
+      --paper: #f7f5f0; --paper-warm: #edeae3; --rule: #d4d0c8;
+      --accent: #2d5fa6; --accent-soft: #e8eef8;
+      --serif: 'EB Garamond', Georgia, serif; --mono: 'DM Mono', monospace;
+    }
+    html { font-size: 18px; }
+    body { font-family: var(--serif); background: var(--paper); color: var(--ink); line-height: 1.8; }
+    nav { border-bottom: 1px solid var(--rule); padding: 1.1rem 2rem; display: flex; align-items: center; gap: 0.5rem; }
+    .nav-back { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); text-decoration: none; transition: color 0.15s; }
+    .nav-back:hover { color: var(--accent); }
+    .nav-sep { font-family: var(--mono); font-size: 0.65rem; color: var(--rule); }
+    .nav-cur { font-family: var(--mono); font-size: 0.65rem; color: var(--ink-muted); }
+    .wrap { max-width: 680px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+    .eyebrow { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+    h1 { font-size: 2rem; font-weight: 400; line-height: 1.2; margin-bottom: 0.25rem; }
+    h1 em { font-style: italic; color: var(--ink-muted); }
+    .meta { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-faint); margin-bottom: 0.75rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 2rem; }
+    .tag { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); padding: 0.2rem 0.6rem; border-radius: 2px; }
+    .rule { border: none; border-top: 1px solid var(--rule); margin-bottom: 2rem; }
+    .abstract { font-style: italic; color: var(--ink-muted); font-size: 0.95rem; margin-bottom: 2rem; padding-left: 1.25rem; border-left: 2px solid var(--rule); }
+    h2 { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 2rem 0 1rem; }
+    p { margin-bottom: 1.1rem; }
+    .theorem-box { background: var(--paper-warm); border-left: 3px solid var(--accent); padding: 1rem 1.25rem; margin: 1.5rem 0; border-radius: 0 4px 4px 0; }
+    .theorem-box .label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+    .proof-box { border-left: 2px solid var(--rule); padding: 0 0 0 1.25rem; margin: 1.5rem 0; }
+    .proof-box .label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.75rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin: 1.5rem 0; }
+    th { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); border-bottom: 1px solid var(--rule); padding: 0.4rem 0.75rem; text-align: left; }
+    td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--paper-warm); }
+    .remark-box { background: var(--paper-warm); border-radius: 4px; padding: 1rem 1.25rem; margin: 1.5rem 0; }
+    .remark-box .label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.5rem; }
+
+    /* Interactive explorer */
+    .explorer { border: 1px solid var(--rule); border-radius: 8px; padding: 1.5rem; margin: 2rem 0; background: var(--paper-warm); }
+    .explorer-title { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; }
+    .slider-row { display: flex; align-items: center; gap: 12px; margin-bottom: 1rem; }
+    .slider-row label { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-muted); min-width: 120px; }
+    .slider-row input[type=range] { flex: 1; }
+    .slider-row .val { font-family: var(--mono); font-size: 0.8rem; font-weight: 500; color: var(--ink); min-width: 2rem; text-align: right; }
+    .result-row { display: flex; align-items: baseline; gap: 1rem; margin: 1.25rem 0 0.5rem; }
+    .result-label { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-faint); }
+    .result-value { font-size: 2rem; font-weight: 500; color: var(--accent); font-family: var(--mono); }
+    .sequence-wrap { margin-top: 1rem; }
+    .sequence-label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.5rem; }
+    .sequence { display: flex; flex-wrap: wrap; gap: 6px; }
+    .seq-cell { font-family: var(--mono); font-size: 0.75rem; background: var(--paper); border: 1px solid var(--rule); border-radius: 4px; padding: 0.25rem 0.5rem; color: var(--ink-muted); }
+    .seq-cell.current { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 500; }
+    .bonacci-note { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-muted); margin-top: 0.75rem; font-style: italic; }
+
+    .download-bar { display: flex; align-items: center; justify-content: space-between; background: var(--paper-warm); border: 1px solid var(--rule); border-radius: 4px; padding: 0.75rem 1.25rem; margin-top: 3rem; }
+    .download-bar span { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.08em; color: var(--ink-faint); }
+    .download-bar a { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); text-decoration: none; }
+    .download-bar a:hover { opacity: 0.7; }
+    footer { border-top: 1px solid var(--rule); padding: 2rem; text-align: center; font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-back" href="../index.html">&larr; All papers</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-cur">Counting staircase climbs</span>
+</nav>
+
+<div class="wrap">
+  <p class="eyebrow">Combinatorics &middot; Recurrence Relations</p>
+  <h1>Counting staircase climbs: <em>a generalised recurrence</em></h1>
+  <p class="meta">Kalim Chhoun &middot; 29 December 2024</p>
+  <div class="tags">
+    <span class="tag">Combinatorics</span>
+    <span class="tag">Recurrence Relations</span>
+    <span class="tag">Fibonacci</span>
+  </div>
+  <hr class="rule" />
+
+  <p class="abstract">How many ways can you climb a staircase of \( m \) steps if you may take between \( 1 \) and \( n \) steps at a time? We derive a general recurrence \( N_{m,n} = \sum_{i=1}^{n} N_{m-i,\,n} \) and show that the Fibonacci and Tribonacci sequences arise as the \( n=2 \) and \( n=3 \) special cases.</p>
+
+  <h2>Setup</h2>
+  <p>A staircase has \( m \geq 1 \) steps. A climber may take between \( 1 \) and \( n \) steps on each move. Let \( N_{m,n} \) denote the number of distinct ways to climb exactly \( m \) steps. The recurrence requires two boundary conditions:</p>
+  \[ N_{0,\,n} = 1 \qquad \text{(one way to climb zero steps: do nothing)} \]
+  \[ N_{m,\,n} = 0 \qquad \text{for } m < 0 \]
+
+  <h2>Theorem</h2>
+  <div class="theorem-box">
+    <div class="label">Theorem — Generalised staircase recurrence</div>
+    <p style="margin:0;">Let \( m \geq 1 \) and \( n \geq 1 \). The number of ways to climb \( m \) steps, taking between \( 1 \) and \( n \) steps at a time, satisfies:</p>
+    \[ N_{m,\,n} = \sum_{i=1}^{n} N_{m-i,\,n} \]
+  </div>
+
+  <h2>Proof</h2>
+  <div class="proof-box">
+    <div class="label">Proof</div>
+    <p>Consider the first move. The climber takes exactly \( i \) steps for some \( i \in \{1, \ldots, n\} \). After taking \( i \) steps, exactly \( m - i \) steps remain, and there are \( N_{m-i,\,n} \) ways to complete the climb. Since the first moves are mutually exclusive and exhaustive:</p>
+    \[ N_{m,\,n} = N_{m-1,\,n} + N_{m-2,\,n} + \cdots + N_{m-n,\,n} = \sum_{i=1}^{n} N_{m-i,\,n} \]
+    <p>\( \therefore\ N_{m,n} = \displaystyle\sum_{i=1}^{n} N_{m-i,\,n} \)</p>
+  </div>
+
+  <h2>Worked example: \( m = 4,\ n = 2 \)</h2>
+  <table>
+    <thead><tr><th>\( m \)</th><th>Recurrence</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>\( 0 \)</td><td>Base case</td><td>\( N_{0,2} = 1 \)</td></tr>
+      <tr><td>\( 1 \)</td><td>\( N_{0,2} \)</td><td>\( N_{1,2} = 1 \)</td></tr>
+      <tr><td>\( 2 \)</td><td>\( N_{1,2} + N_{0,2} \)</td><td>\( N_{2,2} = 2 \)</td></tr>
+      <tr><td>\( 3 \)</td><td>\( N_{2,2} + N_{1,2} \)</td><td>\( N_{3,2} = 3 \)</td></tr>
+      <tr><td>\( 4 \)</td><td>\( N_{3,2} + N_{2,2} \)</td><td>\( N_{4,2} = 5 \)</td></tr>
+    </tbody>
+  </table>
+  <p>The 5 distinct climbs are: \( (1,1,1,1),\ (1,1,2),\ (1,2,1),\ (2,1,1),\ (2,2) \).</p>
+
+  <h2>Explorer</h2>
+  <p>Adjust \( m \) and \( n \) to see how many ways there are to climb the staircase, and watch the sequence build.</p>
+
+  <div class="explorer">
+    <div class="explorer-title">Interactive — staircase explorer</div>
+    <div class="slider-row">
+      <label>Steps \( m \)</label>
+      <input type="range" id="sl-m" min="1" max="20" value="4" step="1" />
+      <span class="val" id="val-m">4</span>
+    </div>
+    <div class="slider-row">
+      <label>Max climb \( n \)</label>
+      <input type="range" id="sl-n" min="1" max="6" value="2" step="1" />
+      <span class="val" id="val-n">2</span>
+    </div>
+    <div class="result-row">
+      <span class="result-label">Ways to climb</span>
+      <span class="result-value" id="result">5</span>
+    </div>
+    <div class="sequence-wrap">
+      <div class="sequence-label">Sequence \( N_{0,n} \ldots N_{m,n} \)</div>
+      <div class="sequence" id="sequence"></div>
+      <div class="bonacci-note" id="bonacci"></div>
+    </div>
+  </div>
+
+  <h2>Connection to known sequences</h2>
+  <div class="remark-box">
+    <div class="label">Remark — Fibonacci (\( n = 2 \))</div>
+    <p style="margin:0;">The recurrence \( N_{m,2} = N_{m-1,2} + N_{m-2,2} \) is precisely the Fibonacci recurrence. The sequence is \( 1, 1, 2, 3, 5, 8, 13, \ldots \)</p>
+  </div>
+  <div class="remark-box">
+    <div class="label">Remark — Tribonacci (\( n = 3 \))</div>
+    <p style="margin:0;">For \( n = 3 \), the recurrence generates the Tribonacci sequence: \( 1, 1, 2, 4, 7, 13, 24, \ldots \) In general \( \{N_{m,n}\} \) is the \( n \)-step Fibonacci sequence.</p>
+  </div>
+
+  <div class="download-bar">
+    <span>staircase.pdf</span>
+    <a href="../papers/staircase.pdf" download>&darr; Download PDF</a>
+  </div>
+</div>
+
+<footer>&copy; Kalim Chhoun &middot; Phnom Penh, Cambodia</footer>
+
+<script>
+  const bonacciNames = {1:'trivial (only one path)',2:'Fibonacci',3:'Tribonacci',4:'Tetranacci',5:'Pentanacci',6:'Hexanacci'};
+
+  function compute(m, n) {
+    const dp = new Array(m + 1).fill(0);
+    dp[0] = 1;
+    for (let k = 1; k <= m; k++) {
+      for (let i = 1; i <= n; i++) {
+        if (k - i >= 0) dp[k] += dp[k - i];
+      }
+    }
+    return dp;
+  }
+
+  function update() {
+    const m = parseInt(document.getElementById('sl-m').value);
+    const n = parseInt(document.getElementById('sl-n').value);
+    document.getElementById('val-m').textContent = m;
+    document.getElementById('val-n').textContent = n;
+
+    const dp = compute(m, n);
+    document.getElementById('result').textContent = dp[m].toLocaleString();
+
+    const seq = document.getElementById('sequence');
+    seq.innerHTML = '';
+    dp.forEach((v, i) => {
+      const cell = document.createElement('div');
+      cell.className = 'seq-cell' + (i === m ? ' current' : '');
+      cell.textContent = v.toLocaleString();
+      seq.appendChild(cell);
+    });
+
+    const name = bonacciNames[n] || n + '-bonacci';
+    document.getElementById('bonacci').textContent =
+      n <= 6 ? 'This sequence is the ' + name + ' sequence.' : 'This is the ' + n + '-bonacci sequence.';
+  }
+
+  document.getElementById('sl-m').addEventListener('input', update);
+  document.getElementById('sl-n').addEventListener('input', update);
+  update();
+</script>
+</body>
+</html>

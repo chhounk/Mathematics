@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Omnipotence Paradox — Kal's Mathematics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #1a1a18; --ink-muted: #6b6b66; --ink-faint: #a8a8a2;
+      --paper: #f7f5f0; --paper-warm: #edeae3; --rule: #d4d0c8;
+      --accent: #2d5fa6; --accent-soft: #e8eef8;
+      --serif: 'EB Garamond', Georgia, serif; --mono: 'DM Mono', monospace;
+    }
+    html { font-size: 18px; }
+    body { font-family: var(--serif); background: var(--paper); color: var(--ink); line-height: 1.8; }
+    nav { border-bottom: 1px solid var(--rule); padding: 1.1rem 2rem; display: flex; align-items: center; gap: 0.5rem; }
+    .nav-back { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); text-decoration: none; transition: color 0.15s; }
+    .nav-back:hover { color: var(--accent); }
+    .nav-sep { font-family: var(--mono); font-size: 0.65rem; color: var(--rule); }
+    .nav-cur { font-family: var(--mono); font-size: 0.65rem; color: var(--ink-muted); }
+    .wrap { max-width: 680px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+    .eyebrow { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+    h1 { font-size: 2rem; font-weight: 400; line-height: 1.2; margin-bottom: 0.25rem; }
+    h1 em { font-style: italic; color: var(--ink-muted); }
+    .meta { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-faint); margin-bottom: 0.75rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 2rem; }
+    .tag { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); padding: 0.2rem 0.6rem; border-radius: 2px; }
+    .rule { border: none; border-top: 1px solid var(--rule); margin-bottom: 2rem; }
+    .abstract { font-style: italic; color: var(--ink-muted); font-size: 0.95rem; margin-bottom: 2rem; padding-left: 1.25rem; border-left: 2px solid var(--rule); }
+    h2 { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 2rem 0 1rem; }
+    p { margin-bottom: 1.1rem; }
+    ul { margin: 0 0 1.1rem 1.5rem; }
+    ul li { margin-bottom: 0.5rem; }
+    .download-bar { display: flex; align-items: center; justify-content: space-between; background: var(--paper-warm); border: 1px solid var(--rule); border-radius: 4px; padding: 0.75rem 1.25rem; margin-top: 3rem; }
+    .download-bar span { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.08em; color: var(--ink-faint); }
+    .download-bar a { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); text-decoration: none; }
+    .download-bar a:hover { opacity: 0.7; }
+    footer { border-top: 1px solid var(--rule); padding: 2rem; text-align: center; font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-back" href="../index.html">&larr; All papers</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-cur">Omnipotence paradox</span>
+</nav>
+
+<div class="wrap">
+  <p class="eyebrow">Philosophy &middot; Logic</p>
+  <h1>Omnipotence paradox: <em>an alternative solution</em></h1>
+  <p class="meta">Kalim Chhoun &middot; 30 December 2024</p>
+  <div class="tags">
+    <span class="tag">Philosophy</span>
+    <span class="tag">Logic</span>
+    <span class="tag">Paradox</span>
+  </div>
+  <hr class="rule" />
+
+  <p class="abstract">The omnipotence paradox asks whether an all-powerful being can create a stone so heavy that even it cannot lift it. We propose an alternative resolution: neutralising the paradox by introducing a second, structurally symmetric paradox.</p>
+
+  <h2>The paradox</h2>
+  <p>Can God — an omnipotent being — create a stone so heavy that no one, including Himself, can lift it?</p>
+  <p>This statement is paradoxical on the grounds that:</p>
+  <ul>
+    <li>If God could create the stone, He would not be able to lift it. Therefore, God is not omnipotent.</li>
+    <li>If God could not create the stone, He is not omnipotent.</li>
+  </ul>
+
+  <h2>Proposed solution</h2>
+  <p>To resolve this paradox, we must turn it into another paradox.</p>
+  <p>God must first split Himself into two. Then, He could create the stone. One version of God would be able to lift the stone, while the other would not. This way, the new paradox voids the initial paradox. Hence, the omnipotence of God stays intact.</p>
+
+  <div class="download-bar">
+    <span>omnipotence.pdf</span>
+    <a href="../papers/omnipotence.pdf" download>&darr; Download PDF</a>
+  </div>
+</div>
+
+<footer>&copy; Kalim Chhoun &middot; Phnom Penh, Cambodia</footer>
+
+</body>
+</html>
