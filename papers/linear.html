@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Why Linear Models are Almost Always Useful — Kal's Mathematics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #1a1a18; --ink-muted: #6b6b66; --ink-faint: #a8a8a2;
+      --paper: #f7f5f0; --paper-warm: #edeae3; --rule: #d4d0c8;
+      --accent: #2d5fa6; --accent-soft: #e8eef8;
+      --serif: 'EB Garamond', Georgia, serif; --mono: 'DM Mono', monospace;
+    }
+    html { font-size: 18px; }
+    body { font-family: var(--serif); background: var(--paper); color: var(--ink); line-height: 1.8; }
+    nav { border-bottom: 1px solid var(--rule); padding: 1.1rem 2rem; display: flex; align-items: center; gap: 0.5rem; }
+    .nav-back { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); text-decoration: none; transition: color 0.15s; }
+    .nav-back:hover { color: var(--accent); }
+    .nav-sep { font-family: var(--mono); font-size: 0.65rem; color: var(--rule); }
+    .nav-cur { font-family: var(--mono); font-size: 0.65rem; color: var(--ink-muted); }
+    .wrap { max-width: 680px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+    .eyebrow { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+    h1 { font-size: 2rem; font-weight: 400; line-height: 1.2; margin-bottom: 0.25rem; }
+    .meta { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-faint); margin-bottom: 0.75rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 2rem; }
+    .tag { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); padding: 0.2rem 0.6rem; border-radius: 2px; }
+    .rule { border: none; border-top: 1px solid var(--rule); margin-bottom: 2rem; }
+    .abstract { font-style: italic; color: var(--ink-muted); font-size: 0.95rem; margin-bottom: 2rem; padding-left: 1.25rem; border-left: 2px solid var(--rule); }
+    h2 { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 2rem 0 1rem; }
+    p { margin-bottom: 1.1rem; }
+    ul, ol { margin: 0 0 1.1rem 1.5rem; }
+    ul li, ol li { margin-bottom: 0.4rem; }
+    .theorem-box { background: var(--paper-warm); border-left: 3px solid var(--accent); padding: 1rem 1.25rem; margin: 1.5rem 0; border-radius: 0 4px 4px 0; }
+    .theorem-box .label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+    .proof-box { border-left: 2px solid var(--rule); padding: 0 0 0 1.25rem; margin: 1.5rem 0; }
+    .proof-box .label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.75rem; }
+
+    /* Interactive */
+    .explorer { border: 1px solid var(--rule); border-radius: 8px; padding: 1.5rem; margin: 2rem 0; background: var(--paper-warm); }
+    .explorer-title { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; }
+    .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem; }
+    .ctrl { display: flex; flex-direction: column; gap: 4px; }
+    .ctrl label { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase; }
+    .ctrl-row { display: flex; align-items: center; gap: 8px; }
+    .ctrl-row input[type=range] { flex: 1; }
+    .ctrl-row .val { font-family: var(--mono); font-size: 0.8rem; font-weight: 500; color: var(--ink); min-width: 2.5rem; text-align: right; }
+    .fn-select { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
+    .fn-btn { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.06em; padding: 0.25rem 0.75rem; border: 1px solid var(--rule); border-radius: 3px; background: var(--paper); color: var(--ink-muted); cursor: pointer; transition: all 0.15s; }
+    .fn-btn.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+    .chart-wrap { position: relative; height: 260px; }
+    .approx-note { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-muted); margin-top: 0.75rem; text-align: center; font-style: italic; }
+
+    .download-bar { display: flex; align-items: center; justify-content: space-between; background: var(--paper-warm); border: 1px solid var(--rule); border-radius: 4px; padding: 0.75rem 1.25rem; margin-top: 3rem; }
+    .download-bar span { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.08em; color: var(--ink-faint); }
+    .download-bar a { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); text-decoration: none; }
+    .download-bar a:hover { opacity: 0.7; }
+    footer { border-top: 1px solid var(--rule); padding: 2rem; text-align: center; font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-back" href="../index.html">&larr; All papers</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-cur">Why linear models are almost always useful</span>
+</nav>
+
+<div class="wrap">
+  <p class="eyebrow">Analysis &middot; Applied Mathematics</p>
+  <h1>Why linear models are almost always useful</h1>
+  <p class="meta">Kalim Chhoun &middot; 3 January 2025</p>
+  <div class="tags">
+    <span class="tag">Analysis</span>
+    <span class="tag">Applied Mathematics</span>
+    <span class="tag">Taylor's Theorem</span>
+  </div>
+  <hr class="rule" />
+
+  <p class="abstract">Linear models enjoy a ubiquity in applied mathematics that seems disproportionate to their simplicity. We argue this is mathematically principled: any smooth function is locally linear by Taylor's theorem, and any linearly-growing function is asymptotically equivalent to a linear one.</p>
+
+  <h2>Setup</h2>
+  <p>Let \( g(x) \) be a function describing some relationship of interest. We ask: under what conditions is it reasonable to model \( g(x) \) as linear, i.e.\ as \( f(x) = cx \)? We answer this in two ways: <em>asymptotically</em> (global behaviour) and <em>locally</em> (behaviour near a point).</p>
+
+  <h2>Asymptotic equivalence</h2>
+  <div class="theorem-box">
+    <div class="label">Definition</div>
+    <p style="margin:0;">Two functions \( f \) and \( g \) are <em>asymptotically equivalent</em>, written \( f(x) \sim g(x) \), if: \[ \lim_{x \to \infty} \frac{g(x)}{f(x)} = C, \qquad C \in \mathbb{R},\ C \neq 0 \]</p>
+  </div>
+  <div class="theorem-box">
+    <div class="label">Proposition</div>
+    <p style="margin:0;">If \( g(x) = ax + b \) is linear with \( a \neq 0 \), then \( g(x) \sim f(x) \) where \( f(x) = x \).</p>
+  </div>
+  <div class="proof-box">
+    <div class="label">Proof</div>
+    \[ \lim_{x \to \infty} \frac{g(x)}{f(x)} = \lim_{x \to \infty} \frac{ax + b}{x} = \lim_{x \to \infty} \left(a + \frac{b}{x}\right) = a \]
+    <p>\( \therefore\ g(x) \sim f(x) \)</p>
+  </div>
+  <p>For non-linear functions, the ratio does not converge to a nonzero constant:</p>
+  <ul>
+    <li><strong>Polynomial</strong> \( g(x) = x^n,\ n > 1 \): \( f(x) = o(g(x)) \) — linear grows slower</li>
+    <li><strong>Logarithmic</strong> \( g(x) = \log x \): \( g(x) = o(f(x)) \) — log grows slower than linear</li>
+    <li><strong>Exponential</strong> \( g(x) = e^x \): \( f(x) = o(g(x)) \) — linear grows slower</li>
+  </ul>
+
+  <h2>Local linearity</h2>
+  <div class="theorem-box">
+    <div class="label">Theorem — First-order Taylor approximation</div>
+    <p>Let \( g : \mathbb{R} \to \mathbb{R} \) be differentiable at \( x_0 \). For small \( h \): \[ g(x_0 + h) \approx g(x_0) + g'(x_0)\, h \] The error is \( o(h) \) — it vanishes faster than \( h \) as \( h \to 0 \).</p>
+  </div>
+  <p>No matter what \( g \) looks like globally, in a sufficiently small neighbourhood of any differentiable point \( x_0 \), it behaves like the linear function \( g(x_0) + g'(x_0)\,h \). This is why linear regression, linearised physics, and linearised control systems work so well in practice.</p>
+
+  <h2>Local linearisation explorer</h2>
+  <p>Pick a function and drag \( x_0 \) to see the tangent line (local linear approximation) update in real time.</p>
+
+  <div class="explorer">
+    <div class="explorer-title">Interactive — tangent line explorer</div>
+    <div class="fn-select" id="fn-select">
+      <button class="fn-btn active" data-fn="sin">sin(x)</button>
+      <button class="fn-btn" data-fn="exp">e^x / 5</button>
+      <button class="fn-btn" data-fn="log">ln(x+3)</button>
+      <button class="fn-btn" data-fn="poly">x²/8</button>
+    </div>
+    <div class="controls">
+      <div class="ctrl">
+        <label>Point x₀</label>
+        <div class="ctrl-row">
+          <input type="range" id="sl-x0" min="-3" max="3" value="0" step="0.1" />
+          <span class="val" id="val-x0">0.0</span>
+        </div>
+      </div>
+      <div class="ctrl">
+        <label>Window h</label>
+        <div class="ctrl-row">
+          <input type="range" id="sl-h" min="0.2" max="4" value="1.5" step="0.1" />
+          <span class="val" id="val-h">1.5</span>
+        </div>
+      </div>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="chart"></canvas>
+    </div>
+    <div class="approx-note" id="approx-note"></div>
+  </div>
+
+  <h2>Conclusion</h2>
+  <p>Linear models are almost always useful for two distinct reasons:</p>
+  <ol>
+    <li><strong>Globally:</strong> if \( g(x) \) grows at a linear rate, then \( g(x) \sim cx \), and a linear model captures the dominant behaviour exactly.</li>
+    <li><strong>Locally:</strong> even if \( g \) is not globally linear, Taylor's theorem guarantees a linear approximation with error \( o(h) \) in any sufficiently small neighbourhood.</li>
+  </ol>
+  <p>The ubiquity of linear models is a consequence of two deep mathematical facts about smooth functions — not intellectual laziness.</p>
+
+  <div class="download-bar">
+    <span>linear.pdf</span>
+    <a href="../papers/linear.pdf" download>&darr; Download PDF</a>
+  </div>
+</div>
+
+<footer>&copy; Kalim Chhoun &middot; Phnom Penh, Cambodia</footer>
+
+<script>
+  const fns = {
+    sin: { f: x => Math.sin(x), df: x => Math.cos(x), label: 'sin(x)' },
+    exp: { f: x => Math.exp(x) / 5, df: x => Math.exp(x) / 5, label: 'eˣ / 5' },
+    log: { f: x => Math.log(x + 3), df: x => 1 / (x + 3), label: 'ln(x+3)' },
+    poly: { f: x => x * x / 8, df: x => x / 4, label: 'x²/8' },
+  };
+  let currentFn = 'sin';
+
+  const ctx = document.getElementById('chart').getContext('2d');
+  const chart = new Chart(ctx, {
+    type: 'line',
+    data: { datasets: [
+      { label: '', data: [], borderColor: '#2d5fa6', borderWidth: 2, pointRadius: 0, tension: 0.3 },
+      { label: 'tangent', data: [], borderColor: '#d85a30', borderWidth: 1.5, borderDash: [5,4], pointRadius: 0, tension: 0 },
+      { label: 'x₀', data: [], borderColor: '#d85a30', pointRadius: 5, pointBackgroundColor: '#d85a30', showLine: false },
+    ]},
+    options: {
+      animation: false,
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { enabled: false } },
+      scales: {
+        x: { type: 'linear', grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { font: { family: 'DM Mono', size: 11 }, color: '#a8a8a2' } },
+        y: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { font: { family: 'DM Mono', size: 11 }, color: '#a8a8a2' } }
+      }
+    }
+  });
+
+  function updateChart() {
+    const x0 = parseFloat(document.getElementById('sl-x0').value);
+    const h = parseFloat(document.getElementById('sl-h').value);
+    document.getElementById('val-x0').textContent = x0.toFixed(1);
+    document.getElementById('val-h').textContent = h.toFixed(1);
+
+    const fn = fns[currentFn];
+    const xs = [];
+    const N = 80;
+    for (let i = 0; i <= N; i++) xs.push(-4 + i * 8 / N);
+
+    chart.data.datasets[0].label = fn.label;
+    chart.data.datasets[0].data = xs.map(x => ({ x, y: parseFloat(fn.f(x).toFixed(4)) }));
+
+    const y0 = fn.f(x0); const dy = fn.df(x0);
+    chart.data.datasets[1].data = [
+      { x: x0 - h, y: parseFloat((y0 + dy * (-h)).toFixed(4)) },
+      { x: x0 + h, y: parseFloat((y0 + dy * h).toFixed(4)) }
+    ];
+    chart.data.datasets[2].data = [{ x: x0, y: parseFloat(y0.toFixed(4)) }];
+    chart.update();
+
+    document.getElementById('approx-note').textContent =
+      `At x₀ = ${x0.toFixed(1)}: g(x₀) ≈ ${y0.toFixed(3)}, slope g\'(x₀) ≈ ${dy.toFixed(3)}`;
+  }
+
+  document.getElementById('sl-x0').addEventListener('input', updateChart);
+  document.getElementById('sl-h').addEventListener('input', updateChart);
+  document.getElementById('fn-select').addEventListener('click', e => {
+    if (!e.target.dataset.fn) return;
+    currentFn = e.target.dataset.fn;
+    document.querySelectorAll('.fn-btn').forEach(b => b.classList.toggle('active', b.dataset.fn === currentFn));
+    updateChart();
+  });
+
+  updateChart();
+</script>
+</body>
+</html>
