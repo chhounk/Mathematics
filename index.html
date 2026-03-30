@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kal's Mathematics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1a18;
+      --ink-muted: #6b6b66;
+      --ink-faint: #a8a8a2;
+      --paper: #f7f5f0;
+      --paper-warm: #edeae3;
+      --rule: #d4d0c8;
+      --accent: #2d5fa6;
+      --accent-soft: #e8eef8;
+      --serif: 'EB Garamond', Georgia, serif;
+      --mono: 'DM Mono', monospace;
+    }
+
+    html { font-size: 18px; }
+
+    body {
+      font-family: var(--serif);
+      background: var(--paper);
+      color: var(--ink);
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    /* Header */
+    header {
+      border-bottom: 1px solid var(--rule);
+      padding: 3rem 0 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .header-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .site-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .site-title {
+      font-size: 2.4rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+      margin-bottom: 0.75rem;
+    }
+
+    .site-title em {
+      font-style: italic;
+      color: var(--ink-muted);
+    }
+
+    .site-desc {
+      font-size: 0.95rem;
+      color: var(--ink-muted);
+      max-width: 480px;
+      line-height: 1.65;
+    }
+
+    /* Main */
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+    }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    /* Paper list */
+    .paper-list {
+      list-style: none;
+    }
+
+    .paper-item {
+      border-bottom: 1px solid var(--rule);
+      padding: 1.75rem 0;
+      display: grid;
+      grid-template-columns: 3.5rem 1fr;
+      gap: 0 1.5rem;
+      align-items: start;
+      transition: background 0.15s;
+    }
+
+    .paper-item:first-child { padding-top: 0.25rem; }
+
+    .paper-num {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--ink-faint);
+      padding-top: 0.3rem;
+      letter-spacing: 0.05em;
+    }
+
+    .paper-body {}
+
+    .paper-title {
+      font-size: 1.15rem;
+      font-weight: 500;
+      color: var(--ink);
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 0.3rem;
+      border-bottom: 1px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .paper-title:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    .paper-meta {
+      font-size: 0.8rem;
+      color: var(--ink-faint);
+      font-family: var(--mono);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.03em;
+    }
+
+    .paper-abstract {
+      font-size: 0.9rem;
+      color: var(--ink-muted);
+      line-height: 1.65;
+      font-style: italic;
+    }
+
+    .paper-tags {
+      margin-top: 0.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 0.2rem 0.6rem;
+      border-radius: 2px;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--rule);
+      padding: 2rem;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    /* Fade in */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    header { animation: fadeUp 0.5s ease both; }
+    .paper-item { animation: fadeUp 0.5s ease both; }
+    .paper-item:nth-child(1) { animation-delay: 0.05s; }
+    .paper-item:nth-child(2) { animation-delay: 0.10s; }
+    .paper-item:nth-child(3) { animation-delay: 0.15s; }
+    .paper-item:nth-child(4) { animation-delay: 0.20s; }
+    .paper-item:nth-child(5) { animation-delay: 0.25s; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <p class="site-eyebrow">chhounk &middot; Mathematics</p>
+      <h1 class="site-title">Kal's <em>Mathematical</em> Writings</h1>
+      <p class="site-desc">Notes, proofs, and expositions on number theory, combinatorics, and related topics. Written for clarity and precision.</p>
+    </div>
+  </header>
+
+  <main>
+    <p class="section-label">Papers &amp; Notes</p>
+
+    <ul class="paper-list">
+
+      <li class="paper-item">
+        <span class="paper-num">001</span>
+        <div class="paper-body">
+          <a class="paper-title" href="papers/infinitude-of-primes.html">The infinitude of primes</a>
+          <p class="paper-meta">26 December 2024 &middot; Number Theory</p>
+          <p class="paper-abstract">Euclid's classical proof that the set of prime numbers is infinite, with a table of numerical examples and remarks on alternative proofs.</p>
+          <div class="paper-tags">
+            <span class="tag">Number Theory</span>
+            <span class="tag">Elementary Proof</span>
+          </div>
+        </div>
+      </li>
+
+      <!-- Add new papers here following the same pattern -->
+
+    </ul>
+  </main>
+
+  <footer>
+    &copy; Kalim Chhoun &middot; Phnom Penh, Cambodia
+  </footer>
+
+</body>
+</html>
