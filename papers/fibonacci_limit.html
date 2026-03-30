@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Infinite Limit of Consecutive Fibonacci Numbers — Kal's Mathematics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #1a1a18; --ink-muted: #6b6b66; --ink-faint: #a8a8a2;
+      --paper: #f7f5f0; --paper-warm: #edeae3; --rule: #d4d0c8;
+      --accent: #2d5fa6; --accent-soft: #e8eef8;
+      --serif: 'EB Garamond', Georgia, serif; --mono: 'DM Mono', monospace;
+    }
+    html { font-size: 18px; }
+    body { font-family: var(--serif); background: var(--paper); color: var(--ink); line-height: 1.8; }
+    nav { border-bottom: 1px solid var(--rule); padding: 1.1rem 2rem; display: flex; align-items: center; gap: 0.5rem; }
+    .nav-back { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); text-decoration: none; transition: color 0.15s; }
+    .nav-back:hover { color: var(--accent); }
+    .nav-sep { font-family: var(--mono); font-size: 0.65rem; color: var(--rule); }
+    .nav-cur { font-family: var(--mono); font-size: 0.65rem; color: var(--ink-muted); }
+    .wrap { max-width: 680px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+    .eyebrow { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+    h1 { font-size: 2rem; font-weight: 400; line-height: 1.2; margin-bottom: 0.25rem; }
+    h1 em { font-style: italic; color: var(--ink-muted); }
+    .meta { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-faint); margin-bottom: 0.75rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 2rem; }
+    .tag { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); padding: 0.2rem 0.6rem; border-radius: 2px; }
+    .rule { border: none; border-top: 1px solid var(--rule); margin-bottom: 2rem; }
+    .abstract { font-style: italic; color: var(--ink-muted); font-size: 0.95rem; margin-bottom: 2rem; padding-left: 1.25rem; border-left: 2px solid var(--rule); }
+    h2 { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 2rem 0 1rem; }
+    p { margin-bottom: 1.1rem; }
+    .theorem-box { background: var(--paper-warm); border-left: 3px solid var(--accent); padding: 1rem 1.25rem; margin: 1.5rem 0; border-radius: 0 4px 4px 0; }
+    .theorem-box .label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+    .proof-box { border-left: 2px solid var(--rule); padding: 0 0 0 1.25rem; margin: 1.5rem 0; }
+    .proof-box .label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.75rem; }
+    .remark-box { background: var(--paper-warm); border-radius: 4px; padding: 1rem 1.25rem; margin: 1.5rem 0; }
+    .remark-box .label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.5rem; }
+
+    /* Interactive convergence explorer */
+    .explorer { border: 1px solid var(--rule); border-radius: 8px; padding: 1.5rem; margin: 2rem 0; background: var(--paper-warm); }
+    .explorer-title { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; }
+    .slider-row { display: flex; align-items: center; gap: 12px; margin-bottom: 1rem; }
+    .slider-row label { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-muted); min-width: 100px; }
+    .slider-row input[type=range] { flex: 1; }
+    .slider-row .val { font-family: var(--mono); font-size: 0.8rem; font-weight: 500; color: var(--ink); min-width: 2rem; text-align: right; }
+    .ratio-display { display: flex; align-items: baseline; gap: 1rem; margin: 1rem 0; }
+    .ratio-label { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-faint); }
+    .ratio-value { font-size: 1.8rem; font-weight: 400; color: var(--accent); font-family: var(--serif); }
+    .phi-diff { font-family: var(--mono); font-size: 0.72rem; color: var(--ink-faint); margin-top: 0.25rem; }
+    .seq-row { font-family: var(--mono); font-size: 0.72rem; color: var(--ink-muted); margin-top: 0.75rem; word-break: break-all; line-height: 1.8; }
+
+    .download-bar { display: flex; align-items: center; justify-content: space-between; background: var(--paper-warm); border: 1px solid var(--rule); border-radius: 4px; padding: 0.75rem 1.25rem; margin-top: 3rem; }
+    .download-bar span { font-family: var(--mono); font-size: 0.65rem; color: var(--ink-faint); }
+    .download-bar a { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); text-decoration: none; }
+    .download-bar a:hover { opacity: 0.7; }
+    footer { border-top: 1px solid var(--rule); padding: 2rem; text-align: center; font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-back" href="../index.html">&larr; All papers</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-cur">The infinite limit of consecutive Fibonacci numbers</span>
+</nav>
+
+<div class="wrap">
+  <p class="eyebrow">Analysis &middot; Number Theory</p>
+  <h1>The infinite limit of <em>consecutive Fibonacci numbers</em></h1>
+  <p class="meta">Kalim Chhoun &middot; 21 January 2025</p>
+  <div class="tags">
+    <span class="tag">Analysis</span>
+    <span class="tag">Number Theory</span>
+    <span class="tag">Golden Ratio</span>
+    <span class="tag">Fibonacci</span>
+  </div>
+  <hr class="rule" />
+
+  <p class="abstract">Let \( F \) be the Fibonacci sequence. We compute \( L = \lim_{n\to\infty} \frac{F_{n+1}}{F_n} \) and show that \( L = \varphi \), the golden ratio. The argument proceeds by expressing \( L \) as an infinite continued fraction, then solving the resulting quadratic.</p>
+
+  <h2>Setup</h2>
+  <p>Let \( F = (F_1, F_2, F_3, \ldots) \) be the Fibonacci sequence defined by \( F_1 = F_2 = 1 \) and \( F_{n+1} = F_n + F_{n-1} \) for \( n \geq 2 \). Define:</p>
+  \[ L = \lim_{n \to \infty} \frac{F_{n+1}}{F_n} \]
+
+  <h2>Derivation</h2>
+  <div class="proof-box">
+    <div class="label">Derivation</div>
+    <p>Using the recurrence \( F_{n+1} = F_n + F_{n-1} \):</p>
+    \[ L = \lim_{n\to\infty}\frac{F_{n+1}}{F_n} = \lim_{n\to\infty}\left(1 + \frac{F_{n-1}}{F_n}\right) = \lim_{n\to\infty}\left(1 + \frac{1}{\dfrac{F_n}{F_{n-1}}}\right) = 1 + \frac{1}{L} \]
+    <p>So \( L \) satisfies \( L = 1 + \frac{1}{L} \), which gives:</p>
+    \[ L^2 - L - 1 = 0 \implies L = \frac{1 \pm \sqrt{5}}{2} \]
+    <p>Since \( L > 0 \), we take the positive root:</p>
+    \[ \therefore\ L = \frac{1 + \sqrt{5}}{2} = \varphi \]
+  </div>
+
+  <h2>Continued fraction representation</h2>
+  <p>The equation \( L = 1 + \frac{1}{L} \) has a beautiful recursive interpretation. Substituting \( L \) into itself indefinitely:</p>
+  \[ \varphi = 1 + \cfrac{1}{1 + \cfrac{1}{1 + \cfrac{1}{1 + \cdots}}} \]
+  <p>This is the infinite continued fraction \( [1; 1, 1, 1, \ldots] \) — the simplest such representation of any irrational number.</p>
+
+  <h2>Convergence explorer</h2>
+  <p>Watch \( \frac{F_{n+1}}{F_n} \) converge to \( \varphi \approx 1.6180\ldots \) as \( n \) grows.</p>
+
+  <div class="explorer">
+    <div class="explorer-title">Interactive — ratio convergence to &phi;</div>
+    <div class="slider-row">
+      <label>Terms \( n \)</label>
+      <input type="range" id="sl-n" min="1" max="30" value="5" step="1" />
+      <span class="val" id="val-n">5</span>
+    </div>
+    <div class="ratio-display">
+      <span class="ratio-label">F(n+1) / F(n) =</span>
+      <span class="ratio-value" id="ratio-val">1.6000</span>
+    </div>
+    <div class="phi-diff" id="phi-diff"></div>
+    <div class="seq-row" id="seq-row"></div>
+  </div>
+
+  <div class="remark-box">
+    <div class="label">Remark</div>
+    <p style="margin:0;">The continued fraction \( [1; 1, 1, 1, \ldots] \) converges more slowly than almost any other continued fraction, making \( \varphi \) the "most irrational" of all irrationals in a precise sense from the theory of Diophantine approximation.</p>
+  </div>
+
+  <div class="download-bar">
+    <span>fibonacci_limit.pdf</span>
+    <a href="../papers/fibonacci_limit.pdf" download>&darr; Download PDF</a>
+  </div>
+</div>
+
+<footer>&copy; Kalim Chhoun &middot; Phnom Penh, Cambodia</footer>
+
+<script>
+  const PHI = (1 + Math.sqrt(5)) / 2;
+
+  function fib(n) {
+    let a = 1, b = 1;
+    for (let i = 2; i < n; i++) [a, b] = [b, a + b];
+    return n === 1 ? 1 : b;
+  }
+
+  function update() {
+    const n = parseInt(document.getElementById('sl-n').value);
+    document.getElementById('val-n').textContent = n;
+
+    const fn1 = fib(n + 1), fn = fib(n);
+    const ratio = fn1 / fn;
+    const diff = Math.abs(ratio - PHI);
+
+    document.getElementById('ratio-val').textContent = ratio.toFixed(8);
+    document.getElementById('phi-diff').textContent =
+      '|ratio − φ| = ' + diff.toExponential(4);
+
+    const terms = [];
+    let a = 1, b = 1;
+    terms.push(a, b);
+    for (let i = 2; i <= n + 1; i++) { [a, b] = [b, a + b]; terms.push(b); }
+    document.getElementById('seq-row').textContent =
+      'F: ' + terms.slice(0, n + 2).join(', ');
+  }
+
+  document.getElementById('sl-n').addEventListener('input', update);
+  update();
+</script>
+</body>
+</html>

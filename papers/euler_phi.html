@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Euler's Phi Function: The Sum Over Divisors — Kal's Mathematics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #1a1a18; --ink-muted: #6b6b66; --ink-faint: #a8a8a2;
+      --paper: #f7f5f0; --paper-warm: #edeae3; --rule: #d4d0c8;
+      --accent: #2d5fa6; --accent-soft: #e8eef8;
+      --serif: 'EB Garamond', Georgia, serif; --mono: 'DM Mono', monospace;
+    }
+    html { font-size: 18px; }
+    body { font-family: var(--serif); background: var(--paper); color: var(--ink); line-height: 1.8; }
+    nav { border-bottom: 1px solid var(--rule); padding: 1.1rem 2rem; display: flex; align-items: center; gap: 0.5rem; }
+    .nav-back { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); text-decoration: none; transition: color 0.15s; }
+    .nav-back:hover { color: var(--accent); }
+    .nav-sep { font-family: var(--mono); font-size: 0.65rem; color: var(--rule); }
+    .nav-cur { font-family: var(--mono); font-size: 0.65rem; color: var(--ink-muted); }
+    .wrap { max-width: 680px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+    .eyebrow { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+    h1 { font-size: 2rem; font-weight: 400; line-height: 1.2; margin-bottom: 0.25rem; }
+    h1 em { font-style: italic; color: var(--ink-muted); }
+    .meta { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-faint); margin-bottom: 0.75rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 2rem; }
+    .tag { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); padding: 0.2rem 0.6rem; border-radius: 2px; }
+    .rule { border: none; border-top: 1px solid var(--rule); margin-bottom: 2rem; }
+    .abstract { font-style: italic; color: var(--ink-muted); font-size: 0.95rem; margin-bottom: 2rem; padding-left: 1.25rem; border-left: 2px solid var(--rule); }
+    h2 { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 2rem 0 1rem; }
+    p { margin-bottom: 1.1rem; }
+    .theorem-box { background: var(--paper-warm); border-left: 3px solid var(--accent); padding: 1rem 1.25rem; margin: 1.5rem 0; border-radius: 0 4px 4px 0; }
+    .theorem-box .label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+    .proof-box { border-left: 2px solid var(--rule); padding: 0 0 0 1.25rem; margin: 1.5rem 0; }
+    .proof-box .label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.75rem; }
+    .remark-box { background: var(--paper-warm); border-radius: 4px; padding: 1rem 1.25rem; margin: 1.5rem 0; }
+    .remark-box .label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.5rem; }
+
+    /* Interactive verifier */
+    .explorer { border: 1px solid var(--rule); border-radius: 8px; padding: 1.5rem; margin: 2rem 0; background: var(--paper-warm); }
+    .explorer-title { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; }
+    .slider-row { display: flex; align-items: center; gap: 12px; margin-bottom: 1rem; }
+    .slider-row label { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-muted); min-width: 60px; }
+    .slider-row input[type=range] { flex: 1; }
+    .slider-row .val { font-family: var(--mono); font-size: 0.8rem; font-weight: 500; color: var(--ink); min-width: 2.5rem; text-align: right; }
+    .div-grid { display: flex; flex-wrap: wrap; gap: 6px; margin: 1rem 0; }
+    .div-pill { font-family: var(--mono); font-size: 0.7rem; background: var(--paper); border: 1px solid var(--rule); border-radius: 4px; padding: 0.2rem 0.6rem; color: var(--ink-muted); }
+    .sum-line { font-family: var(--mono); font-size: 0.8rem; color: var(--ink); margin-top: 0.75rem; line-height: 1.9; }
+    .sum-line strong { color: var(--accent); }
+
+    .download-bar { display: flex; align-items: center; justify-content: space-between; background: var(--paper-warm); border: 1px solid var(--rule); border-radius: 4px; padding: 0.75rem 1.25rem; margin-top: 3rem; }
+    .download-bar span { font-family: var(--mono); font-size: 0.65rem; color: var(--ink-faint); }
+    .download-bar a { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); text-decoration: none; }
+    .download-bar a:hover { opacity: 0.7; }
+    footer { border-top: 1px solid var(--rule); padding: 2rem; text-align: center; font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-back" href="../index.html">&larr; All papers</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-cur">Euler's phi function: the sum over divisors</span>
+</nav>
+
+<div class="wrap">
+  <p class="eyebrow">Number Theory &middot; Elementary Proof</p>
+  <h1>Euler's phi function: <em>the sum over divisors</em></h1>
+  <p class="meta">Kalim Chhoun &middot; 23 January 2025</p>
+  <div class="tags">
+    <span class="tag">Number Theory</span>
+    <span class="tag">Elementary Proof</span>
+    <span class="tag">Euler's Totient</span>
+  </div>
+  <hr class="rule" />
+
+  <p class="abstract">We prove that the sum of Euler's totient function over all divisors of \( m \) equals \( m \): \( \sum_{d \mid m} \varphi(d) = m \) for all \( m \in \mathbb{Z}^+ \). The proof proceeds via two lemmas on prime powers, then applies multiplicativity through prime factorisation.</p>
+
+  <h2>Main result</h2>
+  <div class="theorem-box">
+    <div class="label">Theorem</div>
+    <p style="margin:0;">For all \( m \in \mathbb{Z}^+ \): \[ \sum_{d \mid m} \varphi(d) = m \]</p>
+  </div>
+
+  <h2>Lemmas</h2>
+  <div class="theorem-box">
+    <div class="label">Lemma 1</div>
+    <p style="margin:0;">For any prime \( p \) and \( n \in \mathbb{Z}^+ \): \( \varphi(p^n) = p^n - p^{n-1} \)</p>
+  </div>
+  <div class="proof-box">
+    <div class="label">Proof</div>
+    <p>The integers \( a \) with \( 1 \leq a \leq p^n \) that fail to be coprime to \( p^n \) are exactly those divisible by \( p \): there are \( p^{n-1} \) of them. So \( \varphi(p^n) = p^n - p^{n-1} \).</p>
+  </div>
+
+  <div class="theorem-box">
+    <div class="label">Lemma 2</div>
+    <p style="margin:0;">For any prime \( p \) and \( n \in \mathbb{Z}^+ \): \( \displaystyle\sum_{i=1}^{n} \varphi(p^i) = p^n \)</p>
+  </div>
+  <div class="proof-box">
+    <div class="label">Proof</div>
+    <p>From Lemma 1, the values \( \varphi(p^i) = p^i - p^{i-1} \) telescope:</p>
+    \[ \varphi(1) + \varphi(p) + \varphi(p^2) + \cdots + \varphi(p^n) = 1 + (p-1) + (p^2-p) + \cdots + (p^n - p^{n-1}) = p^n \]
+    <p>\( \therefore\ \displaystyle\sum_{i=1}^{n}\varphi(p^i) = p^n \)</p>
+  </div>
+
+  <h2>Proof of main theorem</h2>
+  <div class="proof-box">
+    <div class="label">Proof</div>
+    <p>Write \( m = \prod_{i=1}^{s} p_i^{k_i} \). By Lemma 2 applied to each prime power:</p>
+    \[ \sum_{d \mid p_1^{k_1}} \varphi(d) = p_1^{k_1}, \quad \sum_{d \mid p_2^{k_2}} \varphi(d) = p_2^{k_2}, \quad \ldots, \quad \sum_{d \mid p_s^{k_s}} \varphi(d) = p_s^{k_s} \]
+    <p>By multiplicativity of \( \varphi \):</p>
+    \[ \sum_{d \mid m} \varphi(d) = \prod_{i=1}^{s}\left(\sum_{d \mid p_i^{k_i}} \varphi(d)\right) = \prod_{i=1}^{s} p_i^{k_i} = m \]
+    <p>\( \therefore\ \displaystyle\sum_{d \mid m} \varphi(d) = m \)</p>
+  </div>
+
+  <h2>Verifier</h2>
+  <p>Pick any \( m \) and watch the divisors, their \( \varphi \) values, and the sum verify the theorem live.</p>
+
+  <div class="explorer">
+    <div class="explorer-title">Interactive — divisor sum verifier</div>
+    <div class="slider-row">
+      <label>m =</label>
+      <input type="range" id="sl-m" min="1" max="60" value="12" step="1" />
+      <span class="val" id="val-m">12</span>
+    </div>
+    <div class="div-grid" id="div-grid"></div>
+    <div class="sum-line" id="sum-line"></div>
+  </div>
+
+  <div class="remark-box">
+    <div class="label">Remark — combinatorial interpretation</div>
+    <p style="margin:0;">The integers from \( 1 \) to \( m \) can be partitioned by \( \gcd(k, m) \). For each divisor \( d \mid m \), exactly \( \varphi(d) \) integers \( k \in \{1,\ldots,m\} \) satisfy \( \gcd(k,m) = m/d \). Summing over all divisors recovers \( m \).</p>
+  </div>
+
+  <div class="download-bar">
+    <span>euler_phi.pdf</span>
+    <a href="../papers/euler_phi.pdf" download>&darr; Download PDF</a>
+  </div>
+</div>
+
+<footer>&copy; Kalim Chhoun &middot; Phnom Penh, Cambodia</footer>
+
+<script>
+  function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
+
+  function phi(n) {
+    let count = 0;
+    for (let i = 1; i <= n; i++) if (gcd(i, n) === 1) count++;
+    return count;
+  }
+
+  function divisors(n) {
+    const d = [];
+    for (let i = 1; i <= n; i++) if (n % i === 0) d.push(i);
+    return d;
+  }
+
+  function update() {
+    const m = parseInt(document.getElementById('sl-m').value);
+    document.getElementById('val-m').textContent = m;
+
+    const divs = divisors(m);
+    const phis = divs.map(d => phi(d));
+    const total = phis.reduce((a, b) => a + b, 0);
+
+    const grid = document.getElementById('div-grid');
+    grid.innerHTML = divs.map((d, i) =>
+      `<span class="div-pill">d=${d}, φ=${phis[i]}</span>`
+    ).join('');
+
+    const terms = divs.map((d, i) => `φ(${d})=${phis[i]}`).join(' + ');
+    document.getElementById('sum-line').innerHTML =
+      terms + ' = <strong>' + total + ' = m ✓</strong>';
+  }
+
+  document.getElementById('sl-m').addEventListener('input', update);
+  update();
+</script>
+</body>
+</html>
