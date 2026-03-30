@@ -6,233 +6,122 @@
   <title>Decision-Making in the Context of Diversification — Kal's Mathematics</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --ink: #1a1a18;
-      --ink-muted: #6b6b66;
-      --ink-faint: #a8a8a2;
-      --paper: #f7f5f0;
-      --paper-warm: #edeae3;
-      --rule: #d4d0c8;
-      --accent: #2d5fa6;
-      --accent-soft: #e8eef8;
-      --serif: 'EB Garamond', Georgia, serif;
-      --mono: 'DM Mono', monospace;
+      --ink: #1a1a18; --ink-muted: #6b6b66; --ink-faint: #a8a8a2;
+      --paper: #f7f5f0; --paper-warm: #edeae3; --rule: #d4d0c8;
+      --accent: #2d5fa6; --accent-soft: #e8eef8;
+      --serif: 'EB Garamond', Georgia, serif; --mono: 'DM Mono', monospace;
     }
-
     html { font-size: 18px; }
-
-    body {
-      font-family: var(--serif);
-      background: var(--paper);
-      color: var(--ink);
-      min-height: 100vh;
-      line-height: 1.7;
-    }
-
-    /* Nav */
-    nav {
-      border-bottom: 1px solid var(--rule);
-      padding: 1.1rem 2rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .nav-back {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--ink-faint);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-
+    body { font-family: var(--serif); background: var(--paper); color: var(--ink); line-height: 1.8; }
+    nav { border-bottom: 1px solid var(--rule); padding: 1.1rem 2rem; display: flex; align-items: center; gap: 0.5rem; }
+    .nav-back { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); text-decoration: none; transition: color 0.15s; }
     .nav-back:hover { color: var(--accent); }
-
-    .nav-sep {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--rule);
-    }
-
-    .nav-current {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.08em;
-      color: var(--ink-muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    /* Header */
-    .paper-header {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 3rem 2rem 2rem;
-      border-bottom: 1px solid var(--rule);
-      margin-bottom: 2.5rem;
-      animation: fadeUp 0.4s ease both;
-    }
-
-    .paper-eyebrow {
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.75rem;
-    }
-
-    h1 {
-      font-size: 2rem;
-      font-weight: 400;
-      line-height: 1.2;
-      margin-bottom: 1rem;
-      letter-spacing: -0.01em;
-    }
-
-    .meta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-
-    .meta-item {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.06em;
-      color: var(--ink-faint);
-    }
-
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-    }
-
-    .tag {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--accent);
-      background: var(--accent-soft);
-      padding: 0.2rem 0.6rem;
-      border-radius: 2px;
-    }
-
-    /* PDF viewer */
-    .viewer-wrap {
-      max-width: 900px;
-      margin: 0 auto 2rem;
-      padding: 0 2rem;
-      animation: fadeUp 0.5s ease 0.1s both;
-    }
-
-    .viewer-toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.6rem 1rem;
-      background: var(--paper-warm);
-      border: 1px solid var(--rule);
-      border-bottom: none;
-      border-radius: 4px 4px 0 0;
-    }
-
-    .viewer-label {
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--ink-faint);
-    }
-
-    .download-link {
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--accent);
-      text-decoration: none;
-      transition: opacity 0.15s;
-    }
-
-    .download-link:hover { opacity: 0.7; }
-
-    .pdf-frame {
-      width: 100%;
-      height: 85vh;
-      min-height: 600px;
-      border: 1px solid var(--rule);
-      border-radius: 0 0 4px 4px;
-      display: block;
-      background: #fff;
-    }
-
-    /* Footer */
-    footer {
-      border-top: 1px solid var(--rule);
-      padding: 2rem;
-      text-align: center;
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--ink-faint);
-      margin-top: 2rem;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    .nav-sep { font-family: var(--mono); font-size: 0.65rem; color: var(--rule); }
+    .nav-cur { font-family: var(--mono); font-size: 0.65rem; color: var(--ink-muted); }
+    .wrap { max-width: 680px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+    .eyebrow { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+    h1 { font-size: 2rem; font-weight: 400; line-height: 1.2; margin-bottom: 0.5rem; }
+    .meta { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-faint); margin-bottom: 0.75rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 2rem; }
+    .tag { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); padding: 0.2rem 0.6rem; border-radius: 2px; }
+    .rule { border: none; border-top: 1px solid var(--rule); margin-bottom: 2rem; }
+    .abstract { font-style: italic; color: var(--ink-muted); font-size: 0.95rem; margin-bottom: 2rem; padding-left: 1.25rem; border-left: 2px solid var(--rule); }
+    h2 { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 2rem 0 1rem; }
+    p { margin-bottom: 1.1rem; }
+    .theorem-box { background: var(--paper-warm); border-left: 3px solid var(--accent); padding: 1rem 1.25rem; margin: 1.5rem 0; border-radius: 0 4px 4px 0; }
+    .theorem-box .label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+    .step { display: grid; grid-template-columns: 2rem 1fr; gap: 0 1rem; margin: 1.25rem 0; }
+    .step-num { font-family: var(--mono); font-size: 0.7rem; color: var(--accent); font-weight: 500; padding-top: 0.15rem; }
+    .step-body p { margin-bottom: 0.6rem; }
+    .highlight { background: var(--accent-soft); border-radius: 4px; padding: 0.75rem 1.25rem; margin: 1.5rem 0; text-align: center; font-size: 1rem; }
+    .download-bar { display: flex; align-items: center; justify-content: space-between; background: var(--paper-warm); border: 1px solid var(--rule); border-radius: 4px; padding: 0.75rem 1.25rem; margin-top: 3rem; }
+    .download-bar span { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.08em; color: var(--ink-faint); }
+    .download-bar a { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); text-decoration: none; }
+    .download-bar a:hover { opacity: 0.7; }
+    footer { border-top: 1px solid var(--rule); padding: 2rem; text-align: center; font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); }
   </style>
 </head>
 <body>
 
-  <nav>
-    <a class="nav-back" href="../index.html">&larr; All papers</a>
-    <span class="nav-sep">/</span>
-    <span class="nav-current">Decision-Making in the Context of Diversification</span>
-  </nav>
+<nav>
+  <a class="nav-back" href="../index.html">&larr; All papers</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-cur">Decision-making in the context of diversification</span>
+</nav>
 
-  <div class="paper-header">
-    <p class="paper-eyebrow">Applied Mathematics &middot; Finance</p>
-    <h1>Decision-Making in the Context of Diversification</h1>
-    <div class="meta-row">
-      <span class="meta-item">Kalim Chhoun</span>
-      <span class="meta-item">27 December 2024</span>
-    </div>
-    <div class="tags">
-      <span class="tag">Applied Mathematics</span>
-      <span class="tag">Finance</span>
-      <span class="tag">Frobenius Norm</span>
+<div class="wrap">
+  <p class="eyebrow">Applied Mathematics &middot; Finance</p>
+  <h1>Decision-making in the context of diversification</h1>
+  <p class="meta">Kalim Chhoun &middot; 27 December 2024</p>
+  <div class="tags">
+    <span class="tag">Applied Mathematics</span>
+    <span class="tag">Finance</span>
+    <span class="tag">Frobenius Norm</span>
+  </div>
+  <hr class="rule" />
+
+  <p class="abstract">We propose the Frobenius norm as a tractable criterion for portfolio diversification. Given an existing portfolio represented by a correlation matrix, the optimal asset to add is the one whose inclusion minimises the Frobenius distance between the new correlation matrix and the identity matrix — the theoretical benchmark of perfect diversification.</p>
+
+  <h2>What is diversification?</h2>
+  <p>Two assets are <em>perfectly diversified</em> with respect to each other if their correlation is zero. A portfolio is perfectly diversified if every pair of distinct assets has zero correlation. Perfect diversification is rarely achievable in practice — the goal is to get as close as possible.</p>
+
+  <h2>Framework</h2>
+  <p>Let \( P = \{p_1, p_2, \ldots, p_n\} \) be a portfolio of \( n \) assets. Compute the pairwise correlations of returns and arrange them in a correlation matrix \( C \in \mathbb{R}^{n \times n} \):</p>
+  \[ C = \begin{bmatrix} r_{11} & r_{12} & \cdots & r_{1n} \\ r_{21} & r_{22} & \cdots & r_{2n} \\ \vdots & \vdots & \ddots & \vdots \\ r_{n1} & r_{n2} & \cdots & r_{nn} \end{bmatrix} \]
+  <p>where \( r_{ij} \in [-1, 1] \) is the correlation between assets \( p_i \) and \( p_j \), and \( r_{ii} = 1 \) for all \( i \). A perfectly diversified portfolio has \( r_{ij} = 0 \) for all \( i \neq j \), so its correlation matrix reduces to the identity \( I_n \). We take \( I_n \) as the benchmark.</p>
+
+  <h2>The selection rule</h2>
+  <p>Let \( U = \{u_1, u_2, \ldots, u_m\} \) be candidate assets not yet in the portfolio. To find the best one to add:</p>
+
+  <div class="step">
+    <span class="step-num">01</span>
+    <div class="step-body">
+      <p>For each candidate \( u_k \in U \), form the expanded matrix \( C_{u_k} \in \mathbb{R}^{(n+1)\times(n+1)} \) by appending the correlations of \( u_k \) with all existing assets.</p>
     </div>
   </div>
 
-  <div class="viewer-wrap">
-    <div class="viewer-toolbar">
-      <span class="viewer-label">PDF &middot; diversification.pdf</span>
-      <a class="download-link" href="../papers/diversification.pdf" download>&darr; Download</a>
+  <div class="step">
+    <span class="step-num">02</span>
+    <div class="step-body">
+      <p>Compute the deviation from the identity: \( \Delta_{u_k} = C_{u_k} - I_{n+1} \)</p>
     </div>
-    <iframe
-      class="pdf-frame"
-      src="../papers/diversification.pdf"
-      title="Decision-Making in the Context of Diversification"
-    ></iframe>
   </div>
 
-  <footer>
-    &copy; Kalim Chhoun &middot; Phnom Penh, Cambodia
-  </footer>
+  <div class="step">
+    <span class="step-num">03</span>
+    <div class="step-body">
+      <p>Compute the Frobenius norm of each deviation matrix:</p>
+      \[ \|\Delta_{u_k}\|_F = \left( \sum_{i=1}^{n+1}\sum_{j=1}^{n+1} \left(\Delta_{u_k}\right)_{ij}^2 \right)^{\!1/2} \]
+    </div>
+  </div>
+
+  <div class="step">
+    <span class="step-num">04</span>
+    <div class="step-body">
+      <p>Select the minimiser:</p>
+      \[ u^* = \arg\min_{u_k \in U} \|\Delta_{u_k}\|_F \]
+    </div>
+  </div>
+
+  <div class="highlight">
+    The asset \( u^* \) brings the portfolio closest to \( I_n \) — closest to perfect diversification.
+  </div>
+
+  <h2>Closing thoughts</h2>
+  <p>This criterion optimises for diversification, not return. Whether diverse portfolios outperform concentrated ones on a risk-adjusted basis remains an empirical question worth testing.</p>
+  <p>The model requires only closing price data — universally and freely available. For a first-pass screening tool, this approach is well-suited. More sophisticated models can incorporate ESG factors, liquidity, and investment climate, but at the cost of additional data and modelling assumptions.</p>
+
+  <div class="download-bar">
+    <span>diversification.pdf</span>
+    <a href="../papers/diversification.pdf" download>&darr; Download PDF</a>
+  </div>
+</div>
+
+<footer>&copy; Kalim Chhoun &middot; Phnom Penh, Cambodia</footer>
 
 </body>
 </html>
